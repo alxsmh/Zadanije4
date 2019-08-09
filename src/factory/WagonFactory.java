@@ -1,0 +1,111 @@
+package factory;
+import entity.Cargo;
+import entity.ICargo;
+
+public class WagonFactory {
+
+	public ICargo create(String cargoName, String routeType)
+	{
+		switch (cargoName.toUpperCase())
+		{
+		case "OIL":
+			return new LiquidWagon_Type65(); 
+			
+		case "LIQUID":
+			return new LiquidWagon_Type58(); 
+			
+		case "PASS":
+			return ((routeType.startsWith("E")) ? new PassangerWagon_Type105() : new PassangerWagon_Type76());
+		
+		case "COAL":
+		case "SALT":
+		case "SAND":
+		case "HALKA":
+			return  new StandartCargoWagon_Type45();
+			
+		case "ANIMAL":
+			return new AnimalCargoWagon_Type26();
+			
+		case "CARS":
+			return new CarWagon_Type35();
+			
+		case "HABARITE":
+			return new PlatformWagon_Type80();
+			
+		default:
+			return null;
+		}
+	}
+	
+	public class LiquidWagon_Type65 extends Cargo{
+
+		public LiquidWagon_Type65() {
+			super("liquid", 65);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class LiquidWagon_Type58 extends Cargo{
+
+		public LiquidWagon_Type58() {
+			super("liquid", 58);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class PassangerWagon_Type105 extends Cargo{
+
+		public PassangerWagon_Type105() {
+			super("passangers", 105);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class PassangerWagon_Type76 extends Cargo{
+
+		public PassangerWagon_Type76() {
+			super("passangers", 76);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class StandartCargoWagon_Type45 extends Cargo{
+
+		public StandartCargoWagon_Type45() {
+			super("soft_cargo", 45);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class AnimalCargoWagon_Type26 extends Cargo{
+
+		public AnimalCargoWagon_Type26() {
+			super("soft_cargo", 26);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class CarWagon_Type35 extends Cargo{
+
+		public CarWagon_Type35() {
+			super("soft_cargo", 35);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+	
+	public class PlatformWagon_Type80 extends Cargo{
+
+		public PlatformWagon_Type80() {
+			super("soft_cargo", 80);
+			// TODO Auto-generated constructor stub
+		}
+
+	}
+}
