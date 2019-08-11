@@ -1,103 +1,155 @@
 package logic;
 
+import java.util.Collections;
+
 import entity.UnitList;
-import factory.TrainFactory;
-import factory.WagonFactory;
 
 public class UnitManager {
-
-	private UnitList wLst;
-	private UnitList tLst;
-
-	private TrainFactory tFact;
-	private WagonFactory wFact;
 	
-	private int unitCappacity;
-	
-	public UnitList getWagonList() {
-		return wLst;
-	}
-
-	public void setWagonList(UnitList wLst) {
-		this.wLst = wLst;
-	}
-
-	
-	public UnitList getTrainList() {
-		return tLst;
-	}
-
-	public void setTrainList(UnitList tLst) {
-		this.tLst = tLst;
-	}
-
-	public UnitManager()
+	public int calculateCurrentLoad(UnitList a)
 	{
-		wLst = (wLst != null) ? this.wLst : new UnitList();
-		tLst = (tLst != null) ? this.tLst : new UnitList();
+		int result = 0;
+		int listLen = a.length();
 		
-		tFact = (tFact != null) ? this.tFact : new TrainFactory();
-		wFact = (wFact != null) ? this.wFact : new WagonFactory();
-	}
-	
-	public UnitManager(String cargoType, int cappacity, String routeType)
-	{
-		wLst = (wLst != null) ? this.wLst : new UnitList();
-		tLst = (tLst != null) ? this.tLst : new UnitList();
-		
-		tFact = (tFact != null) ? this.tFact : new TrainFactory();
-		wFact = (wFact != null) ? this.wFact : new WagonFactory();
-		
-		buildUnit(cargoType, cappacity, routeType);
-	}
-	
-	
-	
-	public void buildWagons(String cargoType, int cappacity, String routeType)
-	{	
-		int tmpCapp = cappacity;
-		this.unitCappacity += cappacity;
-		
-		while (tmpCapp > 0)
+		while (--listLen > -1)
 		{
-			wLst.addElement(wFact.create(cargoType,routeType));
+			result += a.getCompound().get(listLen).getCurrentLoad();
+		}
+		
+		return result;
+	}
+	
+	public int calculateMaxLoad(UnitList a)
+	{
+		int result = 0;
+		int listLen = a.length();
+		
+		while (--listLen > -1)
+		{
+			result += a.getCompound().get(listLen).getWeigth();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Calculate number of empty wagons
+	 * @param a
+	 * @return
+	 */
+	public int calculateEmpty(UnitList a)
+	{
+		int result = 0;
+		int listLen = a.length();
+		
+		while (--listLen > -1)
+		{
+			result += (a.getCompound().get(listLen).getCurrentLoad() > 0 ) ? 0 : 1;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Calculate number of not empty wagons
+	 * @param a
+	 * @return
+	 */
+	public int calculateNotEmpty(UnitList a)
+	{
+		return a.length() - calculateEmpty(a);
+	}
+	
+	public UnitList sortAscByCurrentLoad(UnitList a)
+	{
+		int size = a.length();
+		
+		
+		//outbound array
+		for (int i = 0; i < size; i++)
+		{
+			//inbound array
+			for (int j = 0; j < i; j++) 
+			{
+				//ascending sort
+				if (a.elementAt(i).getCurrentLoad() < a.elementAt(j).getCurrentLoad() ) 
+				{
+					Collections.swap(a.getCompound(), i, j);
+				}
+			}
+		}
+		
+		return a;
+	}
+	
+	/**
+	 * Return pos of founded wagon by inputed load
+	 * @param a
+	 * @param load
+	 * @return
+	 */
+	public int findByLoad(UnitList a, int load)
+	{
+		int pos = -1;
+		
+		int last = a.length()-1;
+		int first = 0;
+		
+		//search
+		while (first <= last)
+		{
+			//pick mid position
+			int center = (first + last) / 2;
+			int curr = a.elementAt(center).getCurrentLoad();
 			
-			tmpCapp -= wLst.getLast().getWeigth();
-		}
-	}
-	
-	public void buildTrain(String routeType)
-	{	
-		int tmpCapp = this.unitCappacity;
-		
-		while (tmpCapp > 0)
-		{
-			tLst.addElement(tFact.create(routeType, tmpCapp));
+			if (curr == load)
+			{
+				return center;
+			}
 			
-			tmpCapp -= tLst.getLast().getWeigth();
+			if (curr > load)
+			{
+				last = center - 1;
+			}
+			else
+			{
+				first = center + 1;
+			}
 		}
+		
+		return pos;
 	}
 	
-	public void buildUnit(String cargoType, int cappacity, String routeType)
+	public int findBetweenLoad(UnitList a, int firstThreshold, int lastThreshold)
 	{
-		buildWagons(cargoType, cappacity, routeType);
+int pos = -1;
 		
-		//after building cargo consistency, we know the power we need to move cargo
-		buildTrain(routeType);
-	}
-	
-	public void buildUnit(String[] cargoType, int[] cappacity, String routeType)
-	{
-		//loop to combine multiple cargos
-		//and multiple capacities 
-		int i = 0;
+		int last = a.length()-1;
+		int first = 0;
 		
-		for (String arp : cargoType)
+		//search
+		while (first <= last)
 		{
-			buildWagons(arp, cappacity[i++], routeType);
+			//pick mid position
+			int center = (first + last) / 2;
+			
+			int curr = a.elementAt(center).getCurrentLoad();
+			
+			if ((curr > firstThreshold) & (curr < lastThreshold))
+			{
+				return center;
+			}
+			
+			if (curr > lastThreshold)
+			{
+				last = center - 1;
+			}
+			else
+			{
+				first = center + 1;
+			}
 		}
-		//
-		//build train with various cargo
-		buildTrain(routeType);
+		
+		return pos;
 	}
 }

@@ -25,6 +25,11 @@ public class UnitList {
 		this.compound.add(el);
 	}
 	
+	public ICargo elementAt(int index) 
+	{
+		return this.compound.get(index);
+	}
+	
 	public ICargo getLast()
 	{
 		return this.compound.get(length()-1);
