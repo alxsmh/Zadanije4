@@ -51,18 +51,44 @@ public class UnitBuilder {
 		buildUnit(cargoType, cappacity, routeType);
 	}
 	
+	public UnitBuilder(String cargoType[], int cappacity[], String routeType)
+	{
+		wLst = (wLst != null) ? this.wLst : new UnitList();
+		tLst = (tLst != null) ? this.tLst : new UnitList();
+		
+		tFact = (tFact != null) ? this.tFact : new TrainFactory();
+		wFact = (wFact != null) ? this.wFact : new WagonFactory();
+		
+		buildUnit(cargoType, cappacity, routeType);
+	}
 	
 	
 	public void buildWagons(String cargoType, int cappacity, String routeType)
 	{	
 		int tmpCapp = cappacity;
-		this.unitCappacity += cappacity;
+		//this.unitCappacity += cappacity;
 		
 		while (tmpCapp > 0)
 		{
-			wLst.addElement(wFact.create(cargoType,routeType));
+			try
+			{
+				wLst.addElement(wFact.create(cargoType,routeType));
+				
+				int weight = wLst.getLast().getWeigth();
+				
+				//has to be independent manager
+				//wLst.getLast().load(10);
+				
+				tmpCapp -= weight;
+				this.unitCappacity += weight;
+			}
+			catch(NullPointerException e)
+			{
+				tmpCapp = -1;
+				System.out.print("wrong cargo");
+			}
 			
-			tmpCapp -= wLst.getLast().getWeigth();
+			
 		}
 	}
 	
@@ -91,13 +117,26 @@ public class UnitBuilder {
 		//loop to combine multiple cargos
 		//and multiple capacities 
 		int i = 0;
-		
-		for (String arp : cargoType)
+		try {
+			for (String arp : cargoType)
+			{
+				buildWagons(arp, cappacity[i++], routeType);
+			}
+		}
+		//inputed cargoType or cappacity has invalid length
+		catch(ArrayIndexOutOfBoundsException e)
 		{
-			buildWagons(arp, cappacity[i++], routeType);
+			return;
 		}
 		//
 		//build train with various cargo
 		buildTrain(routeType);
 	}
+
+	@Override
+	public String toString() {
+		return "UnitBuilder [tLst=" + tLst + "\nwLst=" + wLst + ", ~~ unitCappacity=" + unitCappacity + "]";
+	}
+	
+	
 }

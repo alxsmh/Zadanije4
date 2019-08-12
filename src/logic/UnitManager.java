@@ -2,6 +2,7 @@ package logic;
 
 import java.util.Collections;
 
+import entity.ICargo;
 import entity.UnitList;
 
 public class UnitManager {
@@ -122,7 +123,7 @@ public class UnitManager {
 	
 	public int findBetweenLoad(UnitList a, int firstThreshold, int lastThreshold)
 	{
-int pos = -1;
+		int pos = -1;
 		
 		int last = a.length()-1;
 		int first = 0;
@@ -152,4 +153,51 @@ int pos = -1;
 		
 		return pos;
 	}
+	
+	public int calculateWagonsByType(UnitList list, String type)
+	{
+		int count = 0;
+		
+		for (ICargo tmp : list.getCompound())
+		{
+			if(tmp.getStringType().equals(type))
+			{
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	public int calculateMaxLoadByType(UnitList list, String type)
+	{
+		int load = 0;
+		
+		for (ICargo tmp : list.getCompound())
+		{
+			if(tmp.getStringType().equals(type))
+			{
+				load += tmp.getWeigth();
+			}
+		}
+		
+		return load;
+	}
+	
+	public int calculateCurrentLoadByType(UnitList list, String type)
+	{
+		int load = 0;
+		
+		for (ICargo tmp : list.getCompound())
+		{
+			if(tmp.getStringType().equals(type))
+			{
+				load += tmp.getCurrentLoad();
+			}
+		}
+		
+		return load;
+	}
+	
+	
 }

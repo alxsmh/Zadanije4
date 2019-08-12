@@ -13,7 +13,7 @@ public class Cargo implements ICargo {
 	public void load(int cargo)
 	{
 		//we can't load more than quantity
-		this.current += (this.current + cargo < this.quantity+1) ? cargo : this.quantity;
+		this.current += (this.current + cargo < this.quantity+1) ? cargo : this.quantity - this.current;
 	}
 	
 	public void unload(int cargo)
@@ -71,9 +71,10 @@ public class Cargo implements ICargo {
 	public String toString() {
 		
 		return  this.getClass().getName() + 
-				"[type=" + getStringType() + 
+				"\n[type=" + getStringType() + 
 				", units=" + EMeasureUnits.values()[units].name() + 
 				", quantity=" + ((units == EMeasureUnits.valueOf("WATT").ordinal()) ? quantity*735.5 : quantity) + 
+				", current=" + current +
 				"]";
 	}
 	@Override

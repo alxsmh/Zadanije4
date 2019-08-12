@@ -39,4 +39,11 @@ public class UnitList {
 	{
 		return this.compound.size();
 	}
+
+	@Override
+	public String toString() {
+
+		return "UnitList [" + compound.toString() + ", length=" + length()+ "]";
+	}
+	
 }
