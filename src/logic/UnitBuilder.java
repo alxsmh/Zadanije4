@@ -14,23 +14,6 @@ public class UnitBuilder {
 	
 	private int unitCappacity;
 	
-	public UnitList getWagonList() {
-		return wLst;
-	}
-
-	public void setWagonList(UnitList wLst) {
-		this.wLst = wLst;
-	}
-
-	
-	public UnitList getTrainList() {
-		return tLst;
-	}
-
-	public void setTrainList(UnitList tLst) {
-		this.tLst = tLst;
-	}
-
 	public UnitBuilder()
 	{
 		wLst = (wLst != null) ? this.wLst : new UnitList();
@@ -62,6 +45,22 @@ public class UnitBuilder {
 		buildUnit(cargoType, cappacity, routeType);
 	}
 	
+	public UnitList getWagonList() {
+		return wLst;
+	}
+
+	public void setWagonList(UnitList wLst) {
+		this.wLst = wLst;
+	}
+
+	
+	public UnitList getTrainList() {
+		return tLst;
+	}
+
+	public void setTrainList(UnitList tLst) {
+		this.tLst = tLst;
+	}
 	
 	public void buildWagons(String cargoType, int cappacity, String routeType)
 	{	

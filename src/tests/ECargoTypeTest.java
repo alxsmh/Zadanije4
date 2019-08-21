@@ -1,12 +1,17 @@
 package tests;
 
 import org.junit.Test;
+import org.junit.Assert;
+
+import enums.ECargoType;
 
 public class ECargoTypeTest {
 
 	@Test
 	public void testGetTypeOnString() throws Exception {
-		throw new RuntimeException("not yet implemented");
+		String expected = "LIQUID";
+		
+		Assert.assertEquals(expected, ECargoType.getTypeOnString("Oil").name());
 	}
 
 }

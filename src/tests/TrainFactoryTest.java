@@ -2,11 +2,19 @@ package tests;
 
 import org.junit.Test;
 
+import entity.Cargo;
+import factory.TrainFactory;
+
+import org.junit.Assert;
+
 public class TrainFactoryTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		throw new RuntimeException("not yet implemented");
+		TrainFactory fact = new TrainFactory();
+		Cargo a = (Cargo) fact.create("D", 7500);
+		
+		Assert.assertTrue(a.isTrain());
 	}
 
 }

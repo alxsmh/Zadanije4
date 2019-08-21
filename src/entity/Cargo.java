@@ -10,6 +10,17 @@ public class Cargo implements ICargo {
 	private int quantity;
 	private int current;
 
+	public Cargo(String type, int quantity) {
+
+		//this.setType(ECargoType.valueOf(type.toUpperCase()));
+		this.setType(ECargoType.getTypeOnString(type));
+		
+		this.setUnits();
+		
+		this.quantity = quantity;
+		this.setCurrent(0);
+	}
+	
 	public void load(int cargo)
 	{
 		//we can't load more than quantity
@@ -53,15 +64,7 @@ public class Cargo implements ICargo {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Cargo(String type, int quantity) {
-
-		this.setType(ECargoType.valueOf(type.toUpperCase()));
-		
-		this.setUnits();
-		
-		this.quantity = quantity;
-		this.setCurrent(0);
-	}
+	
 	
 	public boolean isTrain()
 	{
@@ -88,11 +91,11 @@ public class Cargo implements ICargo {
 		return  ((isTrain()) ? "Train" : ECargoType.values()[this.type].name());
 	}
 
-	public int getCurrent() {
+	private int getCurrent() {
 		return current;
 	}
 
-	public void setCurrent(int current) {
+	private void setCurrent(int current) {
 		this.current = current;
 	}
 
@@ -102,5 +105,35 @@ public class Cargo implements ICargo {
 		return getCurrent();
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + current;
+		result = prime * result + quantity;
+		result = prime * result + type;
+		result = prime * result + units;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cargo other = (Cargo) obj;
+		if (current != other.current)
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		if (type != other.type)
+			return false;
+		if (units != other.units)
+			return false;
+		return true;
+	}
 	
 }

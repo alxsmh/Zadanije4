@@ -7,6 +7,11 @@ import entity.UnitList;
 
 public class UnitManager {
 	
+	/**
+	 * Calculate current load of UnitList
+	 * @param a
+	 * @return int current load
+	 */
 	public int calculateCurrentLoad(UnitList a)
 	{
 		int result = 0;
@@ -20,6 +25,11 @@ public class UnitManager {
 		return result;
 	}
 	
+	/**
+	 * Calculate max possible load of UnitList
+	 * @param a
+	 * @return int max possible load
+	 */
 	public int calculateMaxLoad(UnitList a)
 	{
 		int result = 0;
@@ -61,6 +71,11 @@ public class UnitManager {
 		return a.length() - calculateEmpty(a);
 	}
 	
+	/**
+	 * Sort UnitList by current load ASC
+	 * @param a
+	 * @return
+	 */
 	public UnitList sortAscByCurrentLoad(UnitList a)
 	{
 		int size = a.length();
@@ -121,6 +136,12 @@ public class UnitManager {
 		return pos;
 	}
 	
+	/**
+	 * Return pos of founded wagon by inputed load thresholds
+	 * @param a
+	 * @param load
+	 * @return
+	 */
 	public int findBetweenLoad(UnitList a, int firstThreshold, int lastThreshold)
 	{
 		int pos = -1;
@@ -154,6 +175,12 @@ public class UnitManager {
 		return pos;
 	}
 	
+	/**
+	 * Calculate wagonns in UnitList by Type
+	 * @param list
+	 * @param type
+	 * @return
+	 */
 	public int calculateWagonsByType(UnitList list, String type)
 	{
 		int count = 0;
@@ -169,6 +196,12 @@ public class UnitManager {
 		return count;
 	}
 	
+	/**
+	 * Calculate max load in UnitList in wagons by type
+	 * @param list
+	 * @param type
+	 * @return
+	 */
 	public int calculateMaxLoadByType(UnitList list, String type)
 	{
 		int load = 0;
@@ -184,6 +217,12 @@ public class UnitManager {
 		return load;
 	}
 	
+	/**
+	 * Calculate current load in UnitList in wagons by type
+	 * @param list
+	 * @param type
+	 * @return
+	 */
 	public int calculateCurrentLoadByType(UnitList list, String type)
 	{
 		int load = 0;

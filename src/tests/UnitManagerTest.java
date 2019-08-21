@@ -3,7 +3,6 @@ package tests;
 import org.junit.Test;
 
 public class UnitManagerTest {
-
 	@Test
 	public void testCalculateCurrentLoad() throws Exception {
 		throw new RuntimeException("not yet implemented");

@@ -33,7 +33,7 @@ public class UnitInput {
 		{
 			//get characteristics from filename path
 			String routeType = RouteParser.getRoute(line);
-			String[] cargoTypes = RouteParser.getCargos(line);
+			String[] cargoTypes = RouteParser.getCargos(line);			
 			int[] quantitys = RouteParser.getWeights(line);
 			
 			//build train from factory (has empty load)
