@@ -1,3 +1,10 @@
+/**
+ * Cargo entity. It's a ELEMENT of railroad unit
+ * train or cargo wagon
+ * @author Shamshur Aliaksandr
+ * @version 1.0
+ * @since 10.08.2019
+ */
 package entity;
 
 import enums.ECargoType;
@@ -10,6 +17,12 @@ public class Cargo implements ICargo {
 	private int quantity;
 	private int current;
 
+	/**
+	 * Constructor. Returns created element
+	 * @param type	cargo type
+	 * @param quantity max weight that cargo can hold
+	 * @see ECargoType
+	 */
 	public Cargo(String type, int quantity) {
 
 		//this.setType(ECargoType.valueOf(type.toUpperCase()));
@@ -21,12 +34,22 @@ public class Cargo implements ICargo {
 		this.setCurrent(0);
 	}
 	
+	/**
+	 * Loads element on inputed value
+	 * @param cargo value to load
+	 * @see ICargo
+	 */
 	public void load(int cargo)
 	{
 		//we can't load more than quantity
 		this.current += (this.current + cargo < this.quantity+1) ? cargo : this.quantity - this.current;
 	}
 	
+	/**
+	 * Unloads element on inputed value
+	 * @param cargo value to unload
+	 * @see ICargo
+	 */
 	public void unload(int cargo)
 	{
 		//we can't unload more than current
@@ -36,6 +59,12 @@ public class Cargo implements ICargo {
 	public int getType() {
 		return type;
 	}
+	
+	/**
+	 * Set type according to ECargoType
+	 * @param type
+	 * @see ECargoType
+	 */
 	public void setType(ECargoType type) {
 		switch(type)
 		{
@@ -55,6 +84,11 @@ public class Cargo implements ICargo {
 	public int getUnits() {
 		return units;
 	}
+	/**
+	 * Set units according to cargo type order in ECargoType
+	 * @see ECargoType
+	 * @see EMeasureUnits
+	 */
 	public void setUnits() {
 		this.units = EMeasureUnits.values()[ ECargoType.values()[this.type].ordinal()].ordinal();
 	}
@@ -65,7 +99,11 @@ public class Cargo implements ICargo {
 		this.quantity = quantity;
 	}
 	
-	
+	/**
+	 * Calculates is current element a train
+	 * Element is train if it has motor or engine
+	 * @see ECargoType
+	 */
 	public boolean isTrain()
 	{
 		return ((type == ECargoType.DIESEL_MOTOR.ordinal())|((type == ECargoType.ELECTRIC_MOTOR.ordinal()))) ? true : false;
@@ -80,12 +118,19 @@ public class Cargo implements ICargo {
 				", current=" + current +
 				"]";
 	}
+	/**
+	 * Get maximum load element can hold
+	 * @see ICargo
+	 */
 	@Override
 	public int getWeigth() {
 		// TODO Auto-generated method stub
 		return getQuantity();
 	}
 	
+	/**
+	 * Return type of element
+	 */
 	public String getStringType()
 	{
 		return  ((isTrain()) ? "Train" : ECargoType.values()[this.type].name());
@@ -99,6 +144,10 @@ public class Cargo implements ICargo {
 		this.current = current;
 	}
 
+	/**
+	 * Return current element load
+	 * @see ICargo
+	 */
 	@Override
 	public int getCurrentLoad() {
 		// TODO Auto-generated method stub

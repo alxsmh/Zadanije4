@@ -1,4 +1,19 @@
+/**
+ * Class for building unit
+ * @author Shamshur Aliaksandr
+ * @version 1.0
+ * @since 10.08.2019
+ * @see Cargo
+ * @see ICargo
+ * @see UnitList
+ * @see UnitBuilder
+ * @see LoadManager
+ * @see RouteParser
+ */
 package logic;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import entity.UnitList;
 import factory.TrainFactory;
@@ -6,6 +21,8 @@ import factory.WagonFactory;
 
 public class UnitBuilder {
 
+	private static final Logger LOG = LogManager.getLogger(UnitBuilder.class);
+	
 	private UnitList wLst;
 	private UnitList tLst;
 
@@ -21,6 +38,8 @@ public class UnitBuilder {
 		
 		tFact = (tFact != null) ? this.tFact : new TrainFactory();
 		wFact = (wFact != null) ? this.wFact : new WagonFactory();
+
+		LOG.info("no param constructor call");
 	}
 	
 	public UnitBuilder(String cargoType, int cappacity, String routeType)
@@ -32,6 +51,7 @@ public class UnitBuilder {
 		wFact = (wFact != null) ? this.wFact : new WagonFactory();
 		
 		buildUnit(cargoType, cappacity, routeType);
+		LOG.info("param constructor call");
 	}
 	
 	public UnitBuilder(String cargoType[], int cappacity[], String routeType)
@@ -43,6 +63,8 @@ public class UnitBuilder {
 		wFact = (wFact != null) ? this.wFact : new WagonFactory();
 		
 		buildUnit(cargoType, cappacity, routeType);
+		
+		LOG.info("array param constructor call");
 	}
 	
 	public UnitList getWagonList() {
@@ -62,35 +84,47 @@ public class UnitBuilder {
 		this.tLst = tLst;
 	}
 	
+	/**
+	 * Builds single, one type Wagons list
+	 * @param cargoType String
+	 * @param cappacity	int
+	 * @param routeType	String
+	 */
 	public void buildWagons(String cargoType, int cappacity, String routeType)
 	{	
 		int tmpCapp = cappacity;
-		//this.unitCappacity += cappacity;
 		
 		while (tmpCapp > 0)
 		{
+			// wagon factory call
+			//if wagon was not created: nullPointerException
 			try
 			{
 				wLst.addElement(wFact.create(cargoType,routeType));
 				
 				int weight = wLst.getLast().getWeigth();
 				
-				//has to be independent manager
-				//wLst.getLast().load(10);
-				
+				//for checking of ordered load
+				//gets created wagon max load
+				//and decreases ordered capacity on that
 				tmpCapp -= weight;
 				this.unitCappacity += weight;
 			}
 			catch(NullPointerException e)
 			{
 				tmpCapp = -1;
-				System.out.print("wrong cargo");
-			}
-			
-			
+				LOG.error("Wrong cargo name or type");
+			}			
 		}
+		
+		LOG.info("builded wagons");
 	}
 	
+	/**
+	 * Build train according to route type
+	 * And wList capacity
+	 * @param routeType
+	 */
 	public void buildTrain(String routeType)
 	{	
 		int tmpCapp = this.unitCappacity;
@@ -101,16 +135,32 @@ public class UnitBuilder {
 			
 			tmpCapp -= tLst.getLast().getWeigth();
 		}
+		
+		LOG.info("builded trains");
 	}
 	
+	/**
+	 * Build single unit
+	 * @param cargoType cargo name
+	 * @param cappacity
+	 * @param routeType	type of railroad route
+	 */
 	public void buildUnit(String cargoType, int cappacity, String routeType)
 	{
 		buildWagons(cargoType, cappacity, routeType);
 		
 		//after building cargo consistency, we know the power we need to move cargo
 		buildTrain(routeType);
+		
+		LOG.info("unit builded  trains:wagons");
 	}
 	
+	/**
+	 * Build multiple wagons to wList
+	 * @param cargoType cargo names
+	 * @param cappacity capacity array according to cargo names
+	 * @param routeType	type of railroad route 
+	 */
 	public void buildUnit(String[] cargoType, int[] cappacity, String routeType)
 	{
 		//loop to combine multiple cargos
@@ -125,11 +175,14 @@ public class UnitBuilder {
 		//inputed cargoType or cappacity has invalid length
 		catch(ArrayIndexOutOfBoundsException e)
 		{
+			LOG.error(e);
 			return;
 		}
 		//
 		//build train with various cargo
 		buildTrain(routeType);
+		
+		LOG.info("unit with arrays builded  trains:wagons");
 	}
 
 	@Override

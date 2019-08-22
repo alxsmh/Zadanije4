@@ -1,15 +1,35 @@
+/**
+ * Class for ICargo elements list service
+ * @author Shamshur Aliaksandr
+ * @version 1.0
+ * @since 10.08.2019
+ * @see ICargo
+ */
 package entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 public class UnitList {
 	
+	private static final Logger LOG = LogManager.getLogger(UnitList.class);
+	
+	/**
+	 * List of ICargo to handle
+	 */
 	private List<ICargo> compound;
 	
+	/**
+	 * Creates compound
+	 */
 	public UnitList()
 	{				
 		setCompound(new ArrayList<ICargo>());
+		LOG.info("New UnitList is Created");
 	}
 	
 	@Override
@@ -62,21 +82,38 @@ public class UnitList {
 		this.compound = compound;
 	}
 	
+	/**
+	 * Appends compound with ICargo element
+	 * @param el inputing ICargo
+	 */
 	public void addElement(ICargo el) 
 	{
 		this.compound.add(el);
+		LOG.info("Element Added To list" + compound.getClass());
 	}
 	
+	/**
+	 * Pick up ICargo from list by index
+	 * @param index
+	 */
 	public ICargo elementAt(int index) 
 	{
 		return this.compound.get(index);
 	}
 	
+	/**
+	 * Get last ICargo from compound
+	 * @return ICargo
+	 */
 	public ICargo getLast()
 	{
 		return this.compound.get(length()-1);
 	}
 	
+	/**
+	 * Return size of compound
+	 * @return int
+	 */
 	public int length()
 	{
 		return this.compound.size();

@@ -1,8 +1,19 @@
+/**
+ * Enum for possible cargo types handling
+ * @author Shamshur Aliaksandr
+ * @version 1.0
+ * @since 10.08.2019
+ */
 package enums;
 
 public enum ECargoType {
 	DIESEL_MOTOR, ELECTRIC_MOTOR, PASSANGERS, LIQUID, SOFT_CARGO;
 	
+	/**
+	 * Get ECargoType element according to inputed cargo NAME
+	 * @param typ
+	 * @return ECargoType
+	 */
 	public static ECargoType getTypeOnString(String typ)
 	{
 		switch(typ.toUpperCase())

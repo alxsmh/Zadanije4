@@ -1,11 +1,31 @@
+/**
+ * Class for wagon factory
+ * @author Shamshur Aliaksandr
+ * @version 1.0
+ * @since 10.08.2019
+ * @see Cargo
+ * @see ICargo
+ */
 package factory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import entity.Cargo;
 import entity.ICargo;
 
 public class WagonFactory {
 
+	private static final Logger LOG = LogManager.getLogger(WagonFactory.class);
+	
+	/**
+	 * Create wagon according to cargoName and railroad route type
+	 * @param cargoName	cargo name that needed to transport
+	 * @param routeType	railroad route type
+	 * @return
+	 */
 	public ICargo create(String cargoName, String routeType)
 	{
+		LOG.info("Customer entered the Wagon factory");
 		switch (cargoName.toUpperCase())
 		{
 		case "OIL":
@@ -13,7 +33,7 @@ public class WagonFactory {
 			
 		case "LIQUID":
 			return new LiquidWagon_Type58(); 
-			
+		//If railroad route type is E construct electrical passenger wagon	
 		case "PASS":
 			return ((routeType.startsWith("E")) ? new PassangerWagon_Type105() : new PassangerWagon_Type76());
 		
@@ -33,10 +53,14 @@ public class WagonFactory {
 			return new PlatformWagon_Type80();
 			
 		default:
+			LOG.warn("No wagons were created!");
 			return null;
 		}
 	}
 	
+	/*
+	 * Wagons factory can produce
+	 */
 	public class LiquidWagon_Type65 extends Cargo{
 
 		public LiquidWagon_Type65() {

@@ -4,8 +4,16 @@ import java.util.Collections;
 
 import entity.ICargo;
 import entity.UnitList;
+import enums.ECargoType;
+import exceptions.ElementNotFoundException;
+
+import org.apache.logging.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
 
 public class UnitManager {
+	
+	private static final Logger LOG = LogManager.getLogger(UnitManager.class);
 	
 	/**
 	 * Calculate current load of UnitList
@@ -48,7 +56,7 @@ public class UnitManager {
 	 * @param a
 	 * @return
 	 */
-	public int calculateEmpty(UnitList a)
+	public int calculateEmpty(UnitList a) 
 	{
 		int result = 0;
 		int listLen = a.length();
@@ -104,7 +112,7 @@ public class UnitManager {
 	 * @param load
 	 * @return
 	 */
-	public int findByLoad(UnitList a, int load)
+	public int findByLoad(UnitList a, int load)  throws ElementNotFoundException
 	{
 		int pos = -1;
 		
@@ -133,6 +141,12 @@ public class UnitManager {
 			}
 		}
 		
+		if (pos < 0)
+		{
+			LOG.warn("findByLoad genered ElementNotFoundException");
+			throw new ElementNotFoundException("by " + load + " load");
+		}
+		
 		return pos;
 	}
 	
@@ -142,7 +156,7 @@ public class UnitManager {
 	 * @param load
 	 * @return
 	 */
-	public int findBetweenLoad(UnitList a, int firstThreshold, int lastThreshold)
+	public int findBetweenLoad(UnitList a, int firstThreshold, int lastThreshold) throws ElementNotFoundException
 	{
 		int pos = -1;
 		
@@ -172,6 +186,12 @@ public class UnitManager {
 			}
 		}
 		
+		if (pos < 0)
+		{
+			LOG.warn("findBetweenLoad genered ElementNotFoundException");
+			throw new ElementNotFoundException("between " + firstThreshold + " and " + lastThreshold);
+		}
+		
 		return pos;
 	}
 	
@@ -181,9 +201,10 @@ public class UnitManager {
 	 * @param type
 	 * @return
 	 */
-	public int calculateWagonsByType(UnitList list, String type)
+	public int calculateWagonsByType(UnitList list, String type1) 
 	{
 		int count = 0;
+		String type = ECargoType.getTypeOnString(type1).name();
 		
 		for (ICargo tmp : list.getCompound())
 		{
@@ -192,6 +213,8 @@ public class UnitManager {
 				count++;
 			}
 		}
+		
+		
 		
 		return count;
 	}
@@ -202,9 +225,10 @@ public class UnitManager {
 	 * @param type
 	 * @return
 	 */
-	public int calculateMaxLoadByType(UnitList list, String type)
+	public int calculateMaxLoadByType(UnitList list, String type1)
 	{
 		int load = 0;
+		String type = ECargoType.getTypeOnString(type1).name();
 		
 		for (ICargo tmp : list.getCompound())
 		{
@@ -223,9 +247,10 @@ public class UnitManager {
 	 * @param type
 	 * @return
 	 */
-	public int calculateCurrentLoadByType(UnitList list, String type)
+	public int calculateCurrentLoadByType(UnitList list, String type1)
 	{
 		int load = 0;
+		String type = ECargoType.getTypeOnString(type1).name();
 		
 		for (ICargo tmp : list.getCompound())
 		{
